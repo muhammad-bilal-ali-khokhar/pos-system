@@ -115,6 +115,7 @@ export default function SettingsTab() {
         paymentQR: "",
         paymentText: "",
         receiptLayout: "standard",
+        currency: "PKR",
         headerText: "",
         footerText: "",
         thankYouText: "Thank you for your business!",
