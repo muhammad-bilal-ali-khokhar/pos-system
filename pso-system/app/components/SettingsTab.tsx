@@ -8,6 +8,15 @@ interface BusinessSettings {
   phone: string;
   email: string;
   logo: string;
+  footerLogo: string;
+  paymentQR: string;
+  paymentText: string;
+  receiptLayout: string;
+  currency: string;
+  headerText: string;
+  footerText: string;
+  thankYouText: string;
+  visitAgainText: string;
 }
 
 export default function SettingsTab() {
@@ -17,7 +26,16 @@ export default function SettingsTab() {
     address: "",
     phone: "",
     email: "",
-    logo: ""
+    logo: "",
+    footerLogo: "",
+    paymentQR: "",
+    paymentText: "",
+    receiptLayout: "layout1",
+    currency: "PKR",
+    headerText: "",
+    footerText: "",
+    thankYouText: "Thank you for your business!",
+    visitAgainText: "Visit us again"
   });
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -92,7 +110,15 @@ export default function SettingsTab() {
         address: "",
         phone: "",
         email: "",
-        logo: ""
+        logo: "",
+        footerLogo: "",
+        paymentQR: "",
+        paymentText: "",
+        receiptLayout: "standard",
+        headerText: "",
+        footerText: "",
+        thankYouText: "Thank you for your business!",
+        visitAgainText: "Visit us again"
       };
       setSettings(defaultSettings);
       localStorage.removeItem("pos-settings");
@@ -261,6 +287,294 @@ export default function SettingsTab() {
           </div>
         </div>
       )}
+
+      {/* Receipt Footer Section */}
+      <div className="bg-white p-6 rounded-lg shadow-sm">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Receipt Footer (Optional)</h3>
+        
+        <div className="space-y-6">
+          {/* Footer Logo */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Footer Logo/Image</label>
+            <div className="flex items-center gap-4">
+              {settings.footerLogo ? (
+                <div className="relative">
+                  <img src={settings.footerLogo} alt="Footer Logo" className="w-12 h-12 object-cover rounded border" />
+                  <button
+                    onClick={() => handleInputChange("footerLogo", "")}
+                    className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full text-xs"
+                  >
+                    ×
+                  </button>
+                </div>
+              ) : (
+                <div className="w-12 h-12 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
+                  <span className="text-gray-400 text-xs">Logo</span>
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                      handleInputChange("footerLogo", event.target?.result as string);
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+          
+          {/* Payment QR */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Payment QR Code</label>
+            <div className="flex items-center gap-4">
+              {settings.paymentQR ? (
+                <div className="relative">
+                  <img src={settings.paymentQR} alt="Payment QR" className="w-16 h-16 object-cover rounded border" />
+                  <button
+                    onClick={() => handleInputChange("paymentQR", "")}
+                    className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full text-xs"
+                  >
+                    ×
+                  </button>
+                </div>
+              ) : (
+                <div className="w-16 h-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
+                  <span className="text-gray-400 text-xs">QR</span>
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                      handleInputChange("paymentQR", event.target?.result as string);
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+          
+          {/* Payment Text */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Online Payment Text</label>
+            <input
+              type="text"
+              value={settings.paymentText}
+              onChange={(e) => handleInputChange("paymentText", e.target.value)}
+              placeholder="e.g., Scan QR for online payment"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          
+          {/* Receipt Layout */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Receipt Layout</label>
+            <select
+              value={settings.receiptLayout}
+              onChange={(e) => handleInputChange("receiptLayout", e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="layout1">Modern Clean</option>
+              <option value="layout2">Professional Table</option>
+              <option value="layout3">Minimal Simple</option>
+              <option value="layout4">Dark Header</option>
+              <option value="layout5">Elegant Boutique</option>
+              <option value="layout6">Boxed Corporate</option>
+              <option value="layout7">Gradient Premium</option>
+              <option value="layout8">Bold Impact</option>
+              <option value="layout9">Luxury Gold</option>
+              <option value="layout10">Retro Classic</option>
+            </select>
+            <p className="text-sm text-gray-500 mt-1">Choose your preferred receipt format</p>
+            
+            {/* Layout Preview */}
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
+              <h4 className="text-sm font-medium text-gray-700 mb-2">Preview:</h4>
+              <div className="bg-white p-3 rounded border" style={{maxWidth: '250px', fontSize: '10px', fontFamily: 'monospace'}}>
+                {settings.receiptLayout === 'layout1' && (
+                  <div className="text-center">
+                    <div className="font-bold">BUSINESS NAME</div>
+                    <div>Address Line</div>
+                    <div>Tel: Phone</div>
+                    <hr className="my-2" />
+                    <div className="font-bold">CASH INVOICE</div>
+                    <div>Invoice: INV-1234</div>
+                    <div>Date: 01/01/2024</div>
+                    <div>Customer: Sample</div>
+                    <hr className="my-2" />
+                    <div className="flex justify-between">
+                      <span>1. Item Name</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>2 kg × {settings.currency || 'PKR'} 100.00</span>
+                      <span>{settings.currency || 'PKR'} 200.00</span>
+                    </div>
+                    <hr className="my-2" />
+                    <div className="flex justify-between font-bold">
+                      <span>TOTAL:</span>
+                      <span>{settings.currency || 'PKR'} 200.00</span>
+                    </div>
+                    <hr className="my-2" />
+                    <div className="font-bold">Thank you!</div>
+                  </div>
+                )}
+                
+                {settings.receiptLayout === 'layout2' && (
+                  <div>
+                    <div className="text-center font-bold">BUSINESS NAME</div>
+                    <div className="text-xs">Invoice: INV-1234 | Date: 01/01/2024</div>
+                    <table className="w-full text-xs mt-2">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="text-left">#</th>
+                          <th className="text-left">Item</th>
+                          <th>Qty</th>
+                          <th>Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>Sample Item</td>
+                          <td>2</td>
+                          <td>{settings.currency || 'PKR'} 200</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div className="text-right font-bold mt-2">TOTAL: {settings.currency || 'PKR'} 200.00</div>
+                    <div className="text-center mt-2"><strong>Thank you!</strong></div>
+                  </div>
+                )}
+                
+                {settings.receiptLayout === 'layout3' && (
+                  <div>
+                    <div className="text-center">
+                      <h3 className="font-bold">STORE</h3>
+                    </div>
+                    <hr className="border-2 border-black my-2" />
+                    <div>Receipt: INV-1234</div>
+                    <div>Date: 01/01/2024</div>
+                    <div>Customer: Guest</div>
+                    <hr className="border-2 border-black my-2" />
+                    <div>1. Sample Item</div>
+                    <div>2 × {settings.currency || 'PKR'} 100.00 = {settings.currency || 'PKR'} 200.00</div>
+                    <hr className="border-2 border-black my-2" />
+                    <div className="text-center font-bold">TOTAL: {settings.currency || 'PKR'} 200.00</div>
+                    <div className="text-center">Thank You!</div>
+                  </div>
+                )}
+                
+                {(settings.receiptLayout === 'layout4' || !settings.receiptLayout || 
+                  !['layout1', 'layout2', 'layout3'].includes(settings.receiptLayout)) && (
+                  <div>
+                    <div className="bg-gray-800 text-white p-2 text-center">
+                      <div className="font-bold">BUSINESS</div>
+                    </div>
+                    <div className="p-2">
+                      <div><strong>Invoice:</strong> INV-1234</div>
+                      <div><strong>Date:</strong> 01/01/2024</div>
+                      <div><strong>Customer:</strong> Customer</div>
+                      <hr className="my-2" />
+                      <div className="bg-white p-1 rounded border">
+                        <strong>1. Sample Item</strong><br/>
+                        <div>2 kg @ {settings.currency || 'PKR'} 100.00 = <strong>{settings.currency || 'PKR'} 200.00</strong></div>
+                      </div>
+                      <hr className="my-2" />
+                      <div className="text-center font-bold">TOTAL: {settings.currency || 'PKR'} 200.00</div>
+                      <div className="text-center mt-2"><strong>Thank You for Your Business!</strong></div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          
+          {/* Header Text */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Custom Header Text</label>
+            <input
+              type="text"
+              value={settings.headerText}
+              onChange={(e) => handleInputChange("headerText", e.target.value)}
+              placeholder="e.g., Welcome to our store!"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-sm text-gray-500 mt-1">Optional text to show at top of receipt</p>
+          </div>
+          
+          {/* Thank You Text */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Thank You Message</label>
+            <input
+              type="text"
+              value={settings.thankYouText}
+              onChange={(e) => handleInputChange("thankYouText", e.target.value)}
+              placeholder="Thank you for your business!"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-sm text-gray-500 mt-1">Main thank you message on receipt</p>
+          </div>
+          
+          {/* Visit Again Text */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Visit Again Message</label>
+            <input
+              type="text"
+              value={settings.visitAgainText}
+              onChange={(e) => handleInputChange("visitAgainText", e.target.value)}
+              placeholder="Visit us again"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-sm text-gray-500 mt-1">Secondary message below thank you</p>
+          </div>
+          
+          {/* Footer Text */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Custom Footer Text</label>
+            <input
+              type="text"
+              value={settings.footerText}
+              onChange={(e) => handleInputChange("footerText", e.target.value)}
+              placeholder="e.g., Have a great day!"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <p className="text-sm text-gray-500 mt-1">Optional text to show at bottom of receipt</p>
+          </div>
+          
+          {/* Currency */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+            <select
+              value={settings.currency}
+              onChange={(e) => handleInputChange("currency", e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="PKR">PKR - Pakistani Rupee</option>
+              <option value="USD">USD - US Dollar</option>
+              <option value="EUR">EUR - Euro</option>
+              <option value="GBP">GBP - British Pound</option>
+              <option value="INR">INR - Indian Rupee</option>
+              <option value="AED">AED - UAE Dirham</option>
+              <option value="SAR">SAR - Saudi Riyal</option>
+              <option value="QAR">QAR - Qatari Riyal</option>
+            </select>
+            <p className="text-sm text-gray-500 mt-1">Select your business currency</p>
+          </div>
+        </div>
+      </div>
 
       {/* Action Buttons */}
       <div className="bg-white p-6 rounded-lg shadow-sm">

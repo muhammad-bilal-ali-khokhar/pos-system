@@ -4,8 +4,9 @@ import SalesTab from "./components/SalesTab";
 import ItemsTab from "./components/ItemsTab";
 import CategoriesTab from "./components/CategoriesTab";
 import SettingsTab from "./components/SettingsTab";
+import HistoryTab from "./components/HistoryTab";
 
-type Tab = "sales" | "items" | "categories" | "settings";
+type Tab = "sales" | "items" | "categories" | "history" | "settings";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>("sales");
@@ -14,6 +15,7 @@ export default function Home() {
     { id: "sales" as Tab, label: "💵 Sales", icon: "💵" },
     { id: "items" as Tab, label: "🛒 Items", icon: "🛒" },
     { id: "categories" as Tab, label: "🗂️ Categories", icon: "🗂️" },
+    { id: "history" as Tab, label: "📋 History", icon: "📋" },
     { id: "settings" as Tab, label: "⚙️ Settings", icon: "⚙️" },
   ];
 
@@ -45,6 +47,7 @@ export default function Home() {
         {activeTab === "sales" && <SalesTab />}
         {activeTab === "items" && <ItemsTab />}
         {activeTab === "categories" && <CategoriesTab />}
+        {activeTab === "history" && <HistoryTab />}
         {activeTab === "settings" && <SettingsTab />}
       </main>
     </div>
