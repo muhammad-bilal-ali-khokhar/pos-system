@@ -50,10 +50,15 @@ export default function HistoryTab() {
   }, [searchTerm, sales]);
 
   const printReceipt = (sale: Sale) => {
+    // Remove any existing print frames
+    const existingFrames = document.querySelectorAll('iframe[data-print-frame]');
+    existingFrames.forEach(frame => frame.remove());
+    
     const receiptContent = generateReceiptContent(sale);
     
     // Create completely hidden iframe
     const printFrame = document.createElement('iframe');
+    printFrame.setAttribute('data-print-frame', 'true');
     printFrame.style.position = 'absolute';
     printFrame.style.left = '-10000px';
     printFrame.style.top = '-10000px';
@@ -162,7 +167,7 @@ export default function HistoryTab() {
             th { font-weight: 800; color: #000; }
             h2 { margin: 2mm 0; font-size: 16px; font-weight: 800; color: #000; }
             p { margin: 1mm 0; font-size: 12px; font-weight: 700; color: #000; }
-            .logo { width: 80px; height: 80px; margin: 0 auto 3mm; }
+            .logo { width: 100px; height: 100px; margin: 0 auto 3mm; }
             .no-break { page-break-inside: avoid; }
           </style>
         </head>
